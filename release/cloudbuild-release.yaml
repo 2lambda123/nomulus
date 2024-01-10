@@ -3,7 +3,7 @@
 # credential helper.
 # See: https://cloud.google.com/cloud-build/docs/build-debug-locally
 # Then run:
-# cloud-build-local --config=cloudbuild-release.yaml --dryrun=false \
+# cloud-build-local --config=github-actions-release.yaml --dryrun=false \
 #   --substitutions TAG_NAME=[TAG],_INTERNAL_REPO_URL=[URL] ..
 #
 # To manually trigger a build on GCB, run:
@@ -19,7 +19,7 @@
 # repo. Actual release artifacts are built from the release repo, ensuring reproducibility.
 steps:
 # Check the out internal repo.
-- name: 'gcr.io/cloud-builders/git'
+- name: 'actions/checkout@v2'
   entrypoint: /bin/bash
   args:
   - -c
@@ -72,7 +72,7 @@ steps:
     docker push gcr.io/${PROJECT_ID}/base-debug:${TAG_NAME}
   dir: 'release/builder/'
 # Do text replacement in the merged repo, hardcoding image digests.
-- name: 'gcr.io/cloud-builders/gcloud'
+- name: 'actions/setup-gcloud@v2'
   entrypoint: /bin/bash
   args:
   - -c
@@ -194,7 +194,7 @@ steps:
     sed -i s%services.gradle.org/distributions%storage.googleapis.com/${gcs_loc}% \
       gradle/wrapper/gradle-wrapper.properties
 # Check out the release repo.
-- name: 'gcr.io/cloud-builders/gcloud'
+- name: 'actions/setup-gcloud@v2'
   args: ['source', 'repos', 'clone', 'nomulus-release']
 # Tag and check in the release repo.
 - name: 'gcr.io/cloud-builders/git'
