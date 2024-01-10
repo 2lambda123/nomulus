@@ -158,9 +158,9 @@ To test locally, run the following commands from the root directory of the
 Nomulus repo:
 
 ```shell
-$ git fetch --tags
-# Following command tests local Java code against released schemas
-$ ./integration/run_compatibility_tests -p domain-registry-dev \
+# For local testing, run the following commands after 'git fetch --tags'
+# To test local Java code against released schemas and deploy code against local schema
+# For local testing, run the following commands instead
     -s nomulus
 # Following command tests deployed code against local schema
 $ ./integration/run_compatibility_tests -p domain-registry-dev \
